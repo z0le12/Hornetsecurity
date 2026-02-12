@@ -86,7 +86,22 @@ Scenario 9: The user sets all todos as completed
     Then I take a screenshot of the page with the name "all_todo_items_completed"
 
 
-Scenario 10: The user reviews the list of completed todos
+Scenario 10: The user moves a todo from completed back to active
+    Given that I visit the homepage on the URL "http://localhost:8080/todo"
+    And I see the title of the page as "Cypress.io: Kitchen Sink"
+    Then I take a screenshot of the page with the name "all_todo_items_prior_to_being_set_as_completed"
+    Then in the lsit of todos with the class "todo-list" I select an items as completed
+    And I take a screenshot of the page with the name "a_todo_set_as_completed"
+    Then I select the finished todos by clicking on the button with text "completed"
+    And I see the URL of the page as "http://localhost:8080/todo#/completed"
+    And I see the todo items strikedthrough and with a checkmark
+    Then I unchek the finished todo by clicking on the checkmark with class "toggle"
+    Given that I visit the homepage on the URL "http://localhost:8080/todo"
+    And I see the previously finished todo item in the active list
+    Then I take a screenshot of the page with the name "all_todo_items_completed"
+
+
+Scenario 11: The user reviews the list of completed todos
     Given that I visit the homepage on the URL "http://localhost:8080/todo"
     And I see the title of the page as "Cypress.io: Kitchen Sink"
     Then I select the finished todos by clicking on the button with text "Completed"
@@ -94,7 +109,7 @@ Scenario 10: The user reviews the list of completed todos
     Then I take a screenshot of the page with the name "all_finished_todos"
 
 
-Scenario 11: The user deletes all todos which are completed
+Scenario 12: The user deletes all todos which are completed
     Given that I visit the homepage on the URL "http://localhost:8080/todo"
     And I see the title of the page as "Cypress.io: Kitchen Sink"
     Then in the lsit of todos with the class "todo-list" I select all of the items as completed
@@ -106,7 +121,7 @@ Scenario 11: The user deletes all todos which are completed
     Then I take a screenshot of the page with the name "all_completed_todo_items_cleared"
 
 
-Scenario 12: The user deletes an unfinished todo
+Scenario 13: The user deletes an unfinished todo
     Given that I visit the homepage on the URL "http://localhost:8080/todo"
     And I see the title of the page as "Cypress.io: Kitchen Sink"
     Then in the lsit of todos with the class "todo-list" I select an unfinished item by clicking on the "Active" button
@@ -116,7 +131,7 @@ Scenario 12: The user deletes an unfinished todo
     Then I take a screenshot of the page with the name "unfinished_todo_item_cleared"
 
 
-Scenario 13: The user deletes all unfinished todos
+Scenario 14: The user deletes all unfinished todos
     Given that I visit the homepage on the URL "http://localhost:8080/todo"
     And I see the title of the page as "Cypress.io: Kitchen Sink"
     Then in the lsit of todos with the class "todo-list" I select all unfinished item by clicking on the "Active" button

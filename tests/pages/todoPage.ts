@@ -47,13 +47,44 @@ export class TodoPage {
   }
 
   async deleteTodo(index: number) {
-    const item = this.todoItems.nth(index);
-    await item.hover();
-    await item.locator('.destroy').click();
+    let resolvedIndex = index;
+    const count = await this.todoItems.count();
+    if (index < 0) resolvedIndex = count - 1;
+
+    if (resolvedIndex < 0 || resolvedIndex >= count) {
+      throw new Error(`deleteTodo: index ${index} out of bounds (count=${count})`);
+    }
+
+    const item = this.todoItems.nth(resolvedIndex);
+    const itemCount = await item.count();
+    if (itemCount === 0) {
+      throw new Error(`deleteTodo: no item found at resolved index ${resolvedIndex}`);
+    }
+
+    try {
+      await item.scrollIntoViewIfNeeded();
+    } catch (err) {
+    }
+
+    if (!(await item.isVisible())) {
+      await item.waitFor({ state: 'visible', timeout: 2000 }).catch(() => {});
+    }
+
+    try {
+      await item.hover();
+    } catch (err) {
+      const box = await item.boundingBox();
+      if (box) {
+        await this.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      }
+    }
+
+    const destroy = item.locator('.destroy');
+    await destroy.click({ force: true });
   }
 
   async clearCompleted() {
     const clear = this.page.locator('.clear-completed');
     if (await clear.count()) await clear.click();
-  }
+  };
 }
